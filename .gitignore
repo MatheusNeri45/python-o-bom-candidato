@@ -1,0 +1,79 @@
+# Ignorar arquivos de sistema do macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignorar arquivos e pastas de configuração do macOS
+*.swp
+*.swo
+*~.nib
+*.nib
+
+# Ignorar ambientes virtuais
+venv/
+.env/
+.venv/
+
+# Ignorar arquivos de dependências e build
+poetry.lock
+*.egg-info/
+dist/
+build/
+*.egg
+*.pyc
+__pycache__/
+
+# Ignorar arquivos de configuração do Poetry
+.poetry/
+
+# Ignorar arquivos de banco de dados SQLite
+*.sqlite3
+*.db
+
+# Ignorar arquivos temporários e cache
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.idea/
+*.vscode/
+
+# Ignorar configurações específicas de IDEs e editores
+.vscode/
+.idea/
+
+# Ignorar arquivos de configuração de IDE do PyCharm
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Ignorar arquivos de cache
+*.cache
+*.log
+*.tmp
+
+# Ignorar arquivos de configuração do OAuth
+*.json
+
+# Ignorar arquivos específicos de desenvolvimento
+*.env
+
+# Arquivos do Git
+.git/
+
+# Ignorar diretórios e arquivos gerados
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar arquivos de teste
+coverage.xml
+nosetests.xml
+test_*.xml
+
+# Ignorar arquivos de configuração do editor
+*.sublime-workspace
+*.sublime-project
