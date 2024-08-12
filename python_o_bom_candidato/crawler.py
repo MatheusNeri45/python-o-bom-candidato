@@ -3,7 +3,7 @@ import requests
 import os
 from zipfile import ZipFile
 from io import BytesIO
-from 
+from STATES import STATES as states
 def get_resource_urls(url:str) -> list[list]:
     print("The code is getting the resource urls")
     response = requests.get(url)
