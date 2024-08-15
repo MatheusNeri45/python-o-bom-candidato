@@ -12,26 +12,13 @@ def get_resource_urls(url:str) -> list[str]:
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     tags = soup.find_all('li',class_= "resource-item")
-    #I have 3 informations that I need, the title of the resource (if it is for a specific state, the state's abbreviature will be shown ex; "BA"), the paragraph ->
+    #I need 3 pieces of information, the title of the resource (if it is for a specific state, the state's abbreviature will be shown ex; "BA"), the paragraph ->
     #-> information which shows if the resource is from all states or a specific one (empty for specific one) and the link to the resource.
     resources = [[tag.p.string, tag.a.get('title'), tag.find('a',class_= "resource-url-analytics").get('href')] for tag in tags]
     #I take out all urls that do not contain information about the state of Bahia and the criminal records due to being too large of a file
     resources_bahia_useful = [resource[2] for resource in resources if resource[0].find('Todas as UFs') !=-1 or resource[1].find('BA')!=-1 and resource[1].find('Certi') == -1]
     print("Got all files")
     return resources_bahia_useful
-
-# def get_resource_urls(resources_info: list[list]):
-#     #Returns the resource path on the resource URL gotten by the previous function
-#     resource_urls = []
-#     print(resources_info)
-#     print("The code is getting the resource paths")
-#     for r in resources_info:
-#         response = requests.get(r)
-#         soup = BeautifulSoup(response.text, 'html.parser')
-#         for tag in soup.find_all('a', class_="resource-url-analytics"):
-#             resource_urls.append(tag.get('href'))
-#     return resource_urls
-
 
 def filename_in_folder(file_name:str) -> str:
     #Some files are inside a folder, this function removes the folder name that is on the original zip filename
@@ -69,7 +56,7 @@ def decide_directory(file_name: str, directory: str) -> str:
 def download_resources(resource_urls:list[str], url:str) -> list[str]:
     #downloads the resources to
     log = []
-
+    print(resource_urls)
     election_year = url[url.find("candidatos")::]
     directory = f'../o_bom_candidato_files/{election_year}/'
     make_folders(url, election_year)
@@ -82,7 +69,7 @@ def download_resources(resource_urls:list[str], url:str) -> list[str]:
             print("The code got the files name list inside the specific zip file")
             for fname in files_name_list:
                 file_name = filename_in_folder(fname)
-                if (file_name != 'leiame.pdf') or (file_name.find('BA')!=-1):
+                if file_name.find('leiame.pdf')!=-1 or file_name.find('BA')!=-1 or file_name.find('BR')!=-1:
                     try:
                         print(f"The code just started savin the file: {file_name}")
                         with z.open(fname) as f:
@@ -102,11 +89,7 @@ def crawler(url:str):
     resource_urls = get_resource_urls(url)
     LOG = download_resources(resource_urls,url)
     return f'{LOG}'
-    return resource_urls
 
 url = "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
 log = crawler(url)
 print(log)
-
-urls = get_resource_urls(url)
-print(urls)
