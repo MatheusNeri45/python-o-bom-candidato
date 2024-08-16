@@ -53,17 +53,22 @@ def decide_directory(file_name: str, directory: str) -> str:
     return f'{directory}/{file_name}'
 
 
-def download_resources(resource_urls:list[str], url:str) -> list[str]:
+def download_resources(resource_urls:list[str], url:str) -> dict:
     #downloads the resources to
-    log = []
+    log = {
+        "Downloaded":0,
+        "Not Downloaded":0,
+        "Log not downloaded":[],
+    }
     print(resource_urls)
     election_year = url[url.find("candidatos")::]
     directory = f'../o_bom_candidato_files/{election_year}/'
     make_folders(url, election_year)
     for resource_url in resource_urls:
+        print("Getting resource")
         response = requests.get(resource_url)
         zip_file = BytesIO(response.content)
-        print("The code is requesting the zip file")
+        print("Opening zip file")
         with ZipFile (zip_file, 'r') as z:
             files_name_list = z.namelist()
             print("The code got the files name list inside the specific zip file")
@@ -79,17 +84,17 @@ def download_resources(resource_urls:list[str], url:str) -> list[str]:
                                 out_f.write(content)
 
                     except Exception as e:  # noqa: E722
-                         log.append(f'Error writing {file_name}: {str(e)}.')
+                        log["Not Downloaded"]+=1
+                        log["Log not downloaded"].append(f'Error writing {file_name}: {str(e)}.')
                     else:
-                         log.append(f'Resource {file_name} downloaded.')
+                        log["Downloaded"]+=1
     
     return log
         
-def crawler(url:str):
+def crawler_resources(url:str) -> dict:
     resource_urls = get_resource_urls(url)
     LOG = download_resources(resource_urls,url)
-    return f'{LOG}'
+    return LOG
 
-url = "https://dadosabertos.tse.jus.br/dataset/candidatos-2024"
-log = crawler(url)
-print(log)
+def crawler_criminal_records(url:str):
+    pass
