@@ -3,7 +3,7 @@ import requests
 import os
 from zipfile import ZipFile
 from io import BytesIO
-from STATES import STATES as states
+from .STATES import STATES as states
 
 #adicionar func de pegar apenas bens
 def get_resource_urls(url:str, target:str = 'BA') -> list[str]:
@@ -88,7 +88,9 @@ def download_resources(resource_urls:list[str], url:str) -> dict:
                         log["Log not downloaded"].append(f'Error writing {file_name}: {str(e)}.')
                     else:
                         log["Downloaded"] += 1
-    
+    if log.get("Log not downloaded") == []:
+        log["Log not downloaded"] = "No missing file"
+
     return log
         
 def crawler_resources(url:str) -> dict:

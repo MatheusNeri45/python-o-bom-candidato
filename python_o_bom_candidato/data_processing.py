@@ -1,6 +1,5 @@
 import pandas as pd
-import os
-from db_operations import insert_many_db
+# from .db_operations import insert_basic_info_db
 from collections import defaultdict
 # Informações que eu quero
 # INFORMAÇÕES GERAIS
@@ -70,22 +69,25 @@ def consulta_cand(path_to_consulta_cand, path_to_consulta_cand_complt) -> list[d
 
     return documents
 
+def comma_to_dot(number:str) -> float:
+    return float(number.replace(',','.')) if number is not None else 0.0
+
 def bens_candidato(path_to_bens_candidato):
-    final_documents = []
     consulta_cand = pd.read_csv(path_to_bens_candidato, encoding='latin1', sep=";")
     consulta_cand_salvador = consulta_cand[consulta_cand["NM_UE"] == 'SALVADOR']
     bens = consulta_cand_salvador[['SQ_CANDIDATO','DS_TIPO_BEM_CANDIDATO', 'VR_BEM_CANDIDATO']]
-    bens_documents = defaultdict(lambda: defaultdict(float))
+    bens_dict = defaultdict(lambda: defaultdict(float))
 
+    # Preenchendo o dicionário com os dados
     for index, row in bens.iterrows():
-        bens_documents[row.SQ_CANDIDATO][row.DS_TIPO_BEM_CANDIDATO] += row.VR_BEM_CANDIDATO
+        bens_dict[row.SQ_CANDIDATO][row.DS_TIPO_BEM_CANDIDATO] += comma_to_dot(row.VR_BEM_CANDIDATO)
 
-    for sq_candidato, bens_dict in bens_documents.items():
-        bens_dict['Número único'] = sq_candidato
-    
-    final_documents.append(dict(bens_dict))
-
-    return final_documents
+    # Convertendo o dicionário para a lista de documentos no formato desejado
+    bens_documents = [{
+        "Número único": sq_candidato,
+        "Bens": dict(bens_dict)
+    } for sq_candidato, bens_dict in bens_dict.items()]
+    return bens_documents
 
 def match_marital_status(marital_status_code) -> str:
     match marital_status_code:
@@ -106,6 +108,6 @@ def match_marital_status(marital_status_code) -> str:
 
 # documents = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
 # log = insert_many_db(documents, 'Bahia')
-documents = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
-log = insert_many_db(documents, 'Bens Candidatos')
-print(log)
+# documents = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
+# log = insert_basic_info_db(documents, 'Bens Candidatos')
+# print(documents)
