@@ -5,7 +5,8 @@ from zipfile import ZipFile
 from io import BytesIO
 from STATES import STATES as states
 
-def get_resource_urls(url:str) -> list[str]:
+#adicionar func de pegar apenas bens
+def get_resource_urls(url:str, target:str = 'BA') -> list[str]:
     #Returns the resource URLS for the year of 2024 and only for the state of Bahia (you can change by changing the main URL) from the main page of website
     resources_bahia_useful = []
     print("The code is getting the resource urls")
@@ -16,7 +17,7 @@ def get_resource_urls(url:str) -> list[str]:
     #-> information which shows if the resource is from all states or a specific one (empty for specific one) and the link to the resource.
     resources = [[tag.p.string, tag.a.get('title'), tag.find('a',class_= "resource-url-analytics").get('href')] for tag in tags]
     #I take out all urls that do not contain information about the state of Bahia and the criminal records due to being too large of a file
-    resources_bahia_useful = [resource[2] for resource in resources if resource[0].find('Todas as UFs') !=-1 or resource[1].find('BA')!=-1 and resource[1].find('Certi') == -1]
+    resources_bahia_useful = [resource[2] for resource in resources if resource[0].find('Todas as UFs') !=-1 or resource[1].find(target)!=-1 and resource[1].find('Certi') == -1]
     print("Got all files")
     return resources_bahia_useful
 
@@ -52,7 +53,6 @@ def decide_directory(file_name: str, directory: str) -> str:
     
     return f'{directory}/{file_name}'
 
-
 def download_resources(resource_urls:list[str], url:str) -> dict:
     #downloads the resources to
     log = {
@@ -84,10 +84,10 @@ def download_resources(resource_urls:list[str], url:str) -> dict:
                                 out_f.write(content)
 
                     except Exception as e:  # noqa: E722
-                        log["Not Downloaded"]+=1
+                        log["Not Downloaded"] += 1
                         log["Log not downloaded"].append(f'Error writing {file_name}: {str(e)}.')
                     else:
-                        log["Downloaded"]+=1
+                        log["Downloaded"] += 1
     
     return log
         
