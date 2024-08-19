@@ -13,6 +13,7 @@ bs4 = "^0.0.2"
 fastapi = "^0.112.0"
 pymongo = "^4.8.0"
 jinja2 = "^3.1.4"
+httpx = "^0.27.0"
 
 
 [build-system]

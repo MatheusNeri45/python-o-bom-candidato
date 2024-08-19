@@ -1,10 +1,11 @@
 from pymongo import MongoClient
-
+import re
+import os
 client = MongoClient()
 
 db = client["2024_Elections"]
-
 collection = db["BA"]
+bahia_collection = db.BA
 
 
 def insert_basic_info_db(documents, state) -> str:
@@ -32,3 +33,26 @@ def insert_bens_info_db(all_candidates_bens_info, state) -> list[str]:
         else:
             log["Updated"]+=1
     return log
+
+def search_candidate(candidato_buscado:str) -> dict:
+    regex = f".*{candidato_buscado}.*"
+    information = list(bahia_collection.find({"Nome completo": {"$regex": re.compile(regex, re.IGNORECASE)}}))
+    return information
+
+def get_picture_from_server(candidates:dict) -> list[str]:
+    for candidate in candidates:
+        numero_unico = candidate.get("Número único")
+        path_system_jpg = f'/Users/matheusneri/Documents/python-projects/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+        path_system_jpeg = f'/Users/matheusneri/Documents/python-projects/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+        path_jpg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+        path_jpeg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+        check_file_jpg = os.path.isfile(path_system_jpg)
+        check_file_jpeg = os.path.isfile(path_system_jpeg)
+        if check_file_jpg:
+            path = path_jpg
+        elif check_file_jpeg:
+            path = path_jpeg
+        else:
+            path = None
+        candidate['Foto URL'] = path
+    return candidates

@@ -1,28 +1,47 @@
-
-    <div id="search-results">
-    <p class="text-left">Foto </p>
-    <p class="text-left">Nome do candidato: </p>
-    <p class="text-left">Nome na urna: </p>
-    <p class="text-left">Concorrendo a: </p>
-    <p class="text-left">Número na urna: </p>
-    <p class="text-left">Partido: </p>
-
-    <p class="text-left">Raça: </p>
-    <p class="text-left">Gênero: </p>
-    <p class="text-left">UF de nascimento: </p>
-    <p class="text-left">Ocupação: </p>
-    <p class="text-left">Estado civil: </p>
-    <p class="text-left">Grau de instrução: </p>
-    <p class="text-left">Declarou bens? </p>
-    <table class="border-b text-lg">
-      <thead class ="border-b text-center-lg">
-        <tr>
-          <th class="border">Descrição do bem</th>
-          <th class="border">Valor (R$)</th>
-        </tr>
-      </thead>
-      <tbody class="text-center text-sm">
-
-      </tbody>
-    </table>
-    </div>
+<div class="container">
+  <ul class="list-none">
+    {% for candidate in candidates %}
+      <!-- Exibição da imagem do candidato -->
+      <img src='{{candidate["Foto URL"]}}' alt="Foto do candidato">
+      <p><strong>Nome completo:</strong> {{ candidate['Nome completo'] }}</p>
+      <p><strong>Nome na urna:</strong> {{ candidate['Nome na urna'] }}</p>
+      <p><strong>Número do candidato:</strong> {{ candidate['Número do candidato'] }}</p>
+      <p><strong>Sigla do partido:</strong> {{ candidate['Sigla do partido'] }}</p>
+      <p><strong>UF de nascimento:</strong> {{ candidate['UF de nascimento'] }}</p>
+      <p><strong>Gênero:</strong> {{ candidate['Gênero'] }}</p>
+      <p><strong>Grau de instrução:</strong> {{ candidate['Grau de instrução'] }}</p>
+      <p><strong>Estado civil:</strong> {{ candidate['Estado civil'] }}</p>
+      <p><strong>Raça:</strong> {{ candidate['Raça'] }}</p>
+      <p><strong>Despesa máxima da campanha:</strong> {{ candidate['Despesa máxima da campanha'] }}</p>
+      <p><strong>Ocupação:</strong> {{ candidate['Ocupação'] }}</p>
+      <p><strong>Concorrendo a:</strong> {{ candidate['Concorrendo a'] }}</p>
+      <p><strong>Declarou bens?</strong> {{ candidate['Declarou bens'] }}</p>
+      
+      {% if candidate['Declarou bens'] %}
+      {% if candidate.get('Bens') %}
+      <table class="table-auto border-collapse border border-gray-300 mt-4">
+        <thead>
+          <tr>
+            <th class="border border-gray-400 px-4 py-2">Descrição do bem</th>
+            <th class="border border-gray-400 px-4 py-2">Valor (R$)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bem, valor in candidate['Bens'].items() %}
+          <tr>
+            <td class="border border-gray-400 px-4 py-2">{{ bem }}</td>
+            <td class="border border-gray-400 px-4 py-2">{{ valor }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-gray-600 mt-4">Nenhum bem detalhado.</p>
+      {% endif %}
+      {% else %}
+      <p class="text-gray-600 mt-4">Não declarou bens.</p>
+      {% endif %}
+    {% endfor %}
+    <p></p>
+  </ul>
+</div>
