@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build: .
@@ -12,17 +10,9 @@ services:
       - .:/app
     environment:
       - MONGO_URI=mongodb://mongodb:27017
-
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile  # Certifique-se de que está apontando para o Dockerfile correto
-    ports:
-      - "8000:8000"
-    environment:
-      - PYTHONUNBUFFERED=1
-    command: python main.py  # Ajuste o comando conforme necessário
-
+    command: fastapi run ./python_o_bom_candidato/app.py --port 8000
+    #command: uvicorn app.python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
+    #command: python -m uvicorn app.python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
 
   mongodb:
     image: mongo:5.0

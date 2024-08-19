@@ -1,23 +1,18 @@
-# Use uma imagem oficial do Python como base
-FROM python:3.12-slim
-
-# Defina o diretório de trabalho dentro do container
+FROM python:3.12-slim AS builder
 WORKDIR /app
-
-# Copie apenas os arquivos de dependências para melhor cacheamento no build
+RUN pip install poetry
 COPY pyproject.toml poetry.lock ./
 
-# Instale o Poetry
-RUN pip install poetry
+RUN poetry install
 
-# Instale as dependências no ambiente do Docker
-RUN poetry config virtualenvs.create false && poetry install --no-root --no-dev
-
-# Copie o restante do código da aplicação
 COPY . .
 
-# Exponha a porta que o FastAPI vai rodar
-EXPOSE 8000
+FROM python:3.12-slim AS base
 
-# Comando para rodar o servidor FastAPI
-CMD ["uvicorn", "python_o_bom_candidato.app:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY --from=builder /app /app
+WORKDIR /app
+EXPOSE 8000
+ENV PATH "/app/.venv/bin:$PATH"
+CMD ["fastapi", "run", "./python_o_bom_candidato/app.py", "--port", "8000"]
+#CMD ["uvicorn", "app.python_o_bom_candidato.app:app", "--host", "0.0.0.0", "--port", "8000"]
+#CMD ["python", "-m", "uvicorn", "app.python_o_bom_candidato.app:app", "--host", "0.0.0.0", "--port", "8000"]
