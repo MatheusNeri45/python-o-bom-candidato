@@ -78,11 +78,9 @@ def bens_candidato(path_to_bens_candidato):
     bens = consulta_cand_salvador[['SQ_CANDIDATO','DS_TIPO_BEM_CANDIDATO', 'VR_BEM_CANDIDATO']]
     bens_dict = defaultdict(lambda: defaultdict(float))
 
-    # Preenchendo o dicionário com os dados
     for index, row in bens.iterrows():
         bens_dict[row.SQ_CANDIDATO][row.DS_TIPO_BEM_CANDIDATO] += comma_to_dot(row.VR_BEM_CANDIDATO)
 
-    # Convertendo o dicionário para a lista de documentos no formato desejado
     bens_documents = [{
         "Número único": sq_candidato,
         "Bens": dict(bens_dict)
@@ -103,11 +101,3 @@ def match_marital_status(marital_status_code) -> str:
             return "Divorciado(a)"
         case _:
             return "Não informado"
-
-
-
-# documents = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
-# log = insert_many_db(documents, 'Bahia')
-# documents = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
-# log = insert_basic_info_db(documents, 'Bens Candidatos')
-# print(documents)
