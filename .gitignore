@@ -77,3 +77,4 @@ test_*.xml
 # Ignorar arquivos de configuração do editor
 *.sublime-workspace
 *.sublime-project
+.vercel

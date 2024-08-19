@@ -34,16 +34,38 @@ def insert_bens_info_db(all_candidates_bens_info, state) -> list[str]:
             log["Updated"]+=1
     return log
 
-def search_candidate(candidato_buscado:str) -> dict:
+def search_candidate(candidato_buscado:str) -> list:
     regex = f".*{candidato_buscado}.*"
     information = list(bahia_collection.find({"Nome completo": {"$regex": re.compile(regex, re.IGNORECASE)}}))
     return information
 
-def get_picture_from_server(candidates:dict) -> list[str]:
-    for candidate in candidates:
-        numero_unico = candidate.get("Número único")
-        path_system_jpg = f'/Users/matheusneri/Documents/python-projects/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
-        path_system_jpeg = f'/Users/matheusneri/Documents/python-projects/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+def search_unique_number(unique_number:str) -> list:
+    print(unique_number)
+    information = bahia_collection.find_one({"Número único": int(unique_number) })
+    return information
+
+def get_picture_from_server(candidates:list) -> list[str]:
+    if type(candidates) is list:
+        for candidate in candidates:
+            numero_unico = candidate.get("Número único")
+            path_system_jpg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+            path_system_jpeg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+            path_jpg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+            path_jpeg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+            check_file_jpg = os.path.isfile(path_system_jpg)
+            check_file_jpeg = os.path.isfile(path_system_jpeg)
+            if check_file_jpg:
+                path = path_jpg
+            elif check_file_jpeg:
+                path = path_jpeg
+            else:
+                path = None
+            candidate['Foto URL'] = path
+    else:
+        
+        numero_unico = candidates.get("Número único")
+        path_system_jpg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+        path_system_jpeg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
         path_jpg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
         path_jpeg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
         check_file_jpg = os.path.isfile(path_system_jpg)
@@ -54,5 +76,6 @@ def get_picture_from_server(candidates:dict) -> list[str]:
             path = path_jpeg
         else:
             path = None
-        candidate['Foto URL'] = path
+        candidates['Foto URL'] = path
+
     return candidates
