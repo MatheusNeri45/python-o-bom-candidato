@@ -1,12 +1,36 @@
-version: "3.9"
+version: '3.9'
+
 services:
+  app:
+    build: .
+    container_name: fastapi_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Certifique-se de que está apontando para o Dockerfile correto
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python main.py  # Ajuste o comando conforme necessário
+
+
   mongodb:
-    image: mongo:latest
-    container_name: my_mongo_container
+    image: mongo:5.0
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongodb_data:/data/db
 
 volumes:
-  mongo-data:
+  mongodb_data:
