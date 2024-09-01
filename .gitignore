@@ -3,6 +3,7 @@
 .AppleDouble
 .LSOverride
 
+o_bom_candidato_files/
 # Ignorar arquivos e pastas de configuração do macOS
 *.swp
 *.swo
