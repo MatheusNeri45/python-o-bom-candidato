@@ -11,7 +11,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="./frontend")
 
 app = FastAPI()
-app.mount("/o_bom_candidato_files", StaticFiles(directory="../o_bom_candidato_files"), name="o_bom_candidato_files")
+app.mount("/o_bom_candidato_files", StaticFiles(directory="./o_bom_candidato_files"), name="o_bom_candidato_files")
 
 @app.get("/search", response_class=HTMLResponse)
 def search_candidates(request:Request, candidate_to_search:str):
@@ -32,7 +32,7 @@ def candidate_page(request:Request, unique_number:str):
     print(candidate)
     return templates.TemplateResponse("candidate_card.html", {"request":request, "candidate":candidate})
 
-@app.post("/update_candidates_basic_info/")
+@app.post("/crawl_candidates_basic_info/")
 def update_candidates_basic_info():
     log = crawler_resources(url)
     documents_info = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
@@ -41,6 +41,21 @@ def update_candidates_basic_info():
     log_bens_db = insert_bens_info_db(documents_bens, 'BA')
     return {
         "Files info": log,
+        "Db saving basic info": log_info_db,
+        "Db saving bens info": log_bens_db
+    }
+
+@app.put("/update_candidates_basic_info")
+def update_candidates_info_db():
+    pass
+
+@app.post("/insert_candidates_info_in_db/")
+def insert_info_in_db():
+    documents_info = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
+    log_info_db = insert_basic_info_db(documents_info, 'BA')
+    documents_bens = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
+    log_bens_db = insert_bens_info_db(documents_bens, 'BA')
+    return {
         "Db saving basic info": log_info_db,
         "Db saving bens info": log_bens_db
     }

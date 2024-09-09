@@ -48,8 +48,8 @@ def get_picture_from_server(candidates:list) -> list[str]:
     if type(candidates) is list:
         for candidate in candidates:
             numero_unico = candidate.get("Número único")
-            path_system_jpg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
-            path_system_jpeg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+            path_system_jpg = f'./o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+            path_system_jpeg = f'./o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
             path_jpg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
             path_jpeg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
             check_file_jpg = os.path.isfile(path_system_jpg)
@@ -64,8 +64,8 @@ def get_picture_from_server(candidates:list) -> list[str]:
     else:
         
         numero_unico = candidates.get("Número único")
-        path_system_jpg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
-        path_system_jpeg = f'../o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
+        path_system_jpg = f'./o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
+        path_system_jpeg = f'./o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
         path_jpg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
         path_jpeg = f'/o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
         check_file_jpg = os.path.isfile(path_system_jpg)

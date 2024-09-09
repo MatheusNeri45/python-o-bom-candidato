@@ -1,18 +1,35 @@
-FROM python:3.12-slim AS builder
-WORKDIR /app
-RUN pip install poetry
-COPY pyproject.toml poetry.lock ./
+# FROM python:3.12-slim AS base
 
-RUN poetry install
+# WORKDIR /app
 
-COPY . .
+# COPY ./requirements.txt ./requirements.txt
+
+# RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
+
+# COPY . .
+
+
+# EXPOSE 8000
+
+# CMD ["fastapi", "run", "./python_o_bom_candidato/app.py", "--port", "8000"]
+
 
 FROM python:3.12-slim AS base
 
-COPY --from=builder /app /app
 WORKDIR /app
+
+COPY pyproject.toml poetry.lock ./
+
+RUN pip install poetry
+
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-root
+
+RUN poetry run pip install fastapi[standard]
+
+COPY . .
+
 EXPOSE 8000
-ENV PATH "/app/.venv/bin:$PATH"
-CMD ["fastapi", "run", "./python_o_bom_candidato/app.py", "--port", "8000"]
-#CMD ["uvicorn", "app.python_o_bom_candidato.app:app", "--host", "0.0.0.0", "--port", "8000"]
-#CMD ["python", "-m", "uvicorn", "app.python_o_bom_candidato.app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+CMD ["poetry", "fastapi", "run", "./python_o_bom_candidato/app.py", "--port", "8000"]
+

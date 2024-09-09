@@ -41,7 +41,7 @@ def make_folders(directory:str, election_year: str):
     #creates the needed folders
     os.makedirs(directory, exist_ok=True)
     for key in states.keys():
-        folder = f'../o_bom_candidato_files/{election_year}/{key}/'
+        folder = f'./o_bom_candidato_files/{election_year}/{key}/'
         os.makedirs(folder, exist_ok=True)
 
 def decide_directory(file_name: str, directory: str) -> str:
@@ -62,7 +62,7 @@ def download_resources(resource_urls:list[str], url:str) -> dict:
     }
     print(resource_urls)
     election_year = url[url.find("candidatos")::]
-    directory = f'../o_bom_candidato_files/{election_year}/'
+    directory = f'./o_bom_candidato_files/{election_year}/'
     make_folders(url, election_year)
     for resource_url in resource_urls:
         print("Getting resource")

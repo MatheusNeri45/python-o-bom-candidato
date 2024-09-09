@@ -10,7 +10,8 @@ services:
       - .:/app
     environment:
       - MONGO_URI=mongodb://mongodb:27017
-    command: fastapi run ./python_o_bom_candidato/app.py --port 8000
+    command:
+            poetry fastapi run ./python_o_bom_candidato/app.py 
     #command: uvicorn app.python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
     #command: python -m uvicorn app.python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
 
