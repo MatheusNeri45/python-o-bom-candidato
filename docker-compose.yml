@@ -5,15 +5,13 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mongodb
+      mongodb:
+        condition: service_healthy
     volumes:
       - .:/app
     environment:
       - MONGO_URI=mongodb://mongodb:27017
-    command:
-            poetry fastapi run ./python_o_bom_candidato/app.py 
-    #command: uvicorn app.python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
-    #command: python -m uvicorn app.python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
+    command: poetry run uvicorn python_o_bom_candidato.app:app --host 0.0.0.0 --port 8000
 
   mongodb:
     image: mongo:5.0
@@ -22,6 +20,12 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
 volumes:
   mongodb_data:
