@@ -45,24 +45,20 @@ def update_candidates_basic_info():
         "Db saving bens info": log_bens_db
     }
 
-@app.put("/update_candidates_basic_info")
-def update_candidates_info_db():
-    documents_info = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
-    log_info_db = insert_basic_info_db(documents_info, 'BA')
-    documents_bens = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
-    log_bens_db = insert_bens_info_db(documents_bens, 'BA')
-    return {
-        "Db saving basic info": log_info_db,
-        "Db saving bens info": log_bens_db
-    }
+# @app.put("/update_candidates_basic_info")
+# def update_candidates_info_db():
+#     documents_info = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
+#     # atualizar documentos
+#     documents_bens = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
+#     #atualizar documentos
+#     return {
+#         "Db saving basic info": log_info_db,
+#         "Db saving bens info": log_bens_db
+#     }
 
-@app.post("/insert_candidates_info_in_db/")
+@app.put("/candidates_info_updated/")
 def insert_info_in_db():
-    documents_info = consulta_cand(path_to_consulta_cand=path_to_consulta_cand, path_to_consulta_cand_complt=path_to_consulta_cand_complementar)
-    log_info_db = insert_basic_info_db(documents_info, 'BA')
-    documents_bens = bens_candidato(path_to_bens_candidato=path_to_bens_candidato)
-    log_bens_db = insert_bens_info_db(documents_bens, 'BA')
+    log = crawler_resources(url)
     return {
-        "Db saving basic info": log_info_db,
-        "Db saving bens info": log_bens_db
+        "Files info": log,
     }

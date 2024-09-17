@@ -8,7 +8,7 @@ collection = db["BA"]
 bahia_collection = db.BA
 
 
-def insert_basic_info_db(documents, state) -> str:
+def insert_basic_info_db(documents:list[dict], state:str) -> str:
     try: 
         db[state].insert_many(documents)
     except Exception:
@@ -40,7 +40,6 @@ def search_candidate(candidato_buscado:str) -> list:
     return information
 
 def search_unique_number(unique_number:str) -> list:
-    print(unique_number)
     information = bahia_collection.find_one({"Número único": int(unique_number) })
     return information
 

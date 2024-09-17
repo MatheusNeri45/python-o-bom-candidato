@@ -1,7 +1,7 @@
 import pandas as pd
 from collections import defaultdict
 
-def consulta_cand(path_to_consulta_cand, path_to_consulta_cand_complt) -> list[dict]:
+def consulta_cand(path_to_consulta_cand:str, path_to_consulta_cand_complt:str) -> list[dict]:
     consulta_cand = pd.read_csv(path_to_consulta_cand, encoding='latin1', sep=";")
     consulta_cand_complement = pd.read_csv(path_to_consulta_cand_complt, encoding='latin1', sep=';')
     consulta_cand = pd.merge(consulta_cand, consulta_cand_complement, how="inner", on="SQ_CANDIDATO")
@@ -41,7 +41,7 @@ def consulta_cand(path_to_consulta_cand, path_to_consulta_cand_complt) -> list[d
 def comma_to_dot(number:str) -> float:
     return float(number.replace(',','.')) if number is not None else 0.0
 
-def bens_candidato(path_to_bens_candidato):
+def bens_candidato(path_to_bens_candidato:str):
     consulta_cand = pd.read_csv(path_to_bens_candidato, encoding='latin1', sep=";")
     consulta_cand_salvador = consulta_cand[consulta_cand["NM_UE"] == 'SALVADOR']
     bens = consulta_cand_salvador[['SQ_CANDIDATO','DS_TIPO_BEM_CANDIDATO', 'VR_BEM_CANDIDATO']]
