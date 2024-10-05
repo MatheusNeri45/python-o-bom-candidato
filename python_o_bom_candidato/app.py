@@ -16,7 +16,6 @@ app = FastAPI()
 templates = Jinja2Templates(directory="./frontend")
 templates.env.globals["currency"] = locale.currency
 
-app = FastAPI()
 app.mount("/o_bom_candidato_files", StaticFiles(directory="./o_bom_candidato_files"), name="o_bom_candidato_files")
 
 @app.get("/search", response_class=HTMLResponse)
