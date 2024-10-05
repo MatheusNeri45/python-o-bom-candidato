@@ -3,7 +3,38 @@ import requests
 import os
 from zipfile import ZipFile
 from io import BytesIO
-from .STATES import STATES as states
+# from .STATES import STATES as states
+
+states = {
+    # 'AC': 'Acre',
+    # 'AL': 'Alagoas',
+    # 'AP': 'Amapá',
+    # 'AM': 'Amazonas',
+    'BA': 'Bahia',
+    # 'CE': 'Ceará',
+    # 'DF': 'Distrito Federal',
+    # 'ES': 'Espírito Santo',
+    # 'GO': 'Goiás',
+    # 'MA': 'Maranhão',
+    # 'MT': 'Mato Grosso',
+    # 'MS': 'Mato Grosso do Sul',
+    # 'MG': 'Minas Gerais',
+    # 'PA': 'Pará',
+    # 'PB': 'Paraíba',
+    # 'PR': 'Paraná',
+    # 'PE': 'Pernambuco',
+    # 'PI': 'Piauí',
+    # 'RJ': 'Rio de Janeiro',
+    # 'RN': 'Rio Grande do Norte',
+    # 'RS': 'Rio Grande do Sul',
+    # 'RO': 'Rondônia',
+    # 'RR': 'Roraima',
+    # 'SC': 'Santa Catarina',
+    # 'SP': 'São Paulo',
+    # 'SE': 'Sergipe',
+    # 'TO': 'Tocantins',
+    'BR': 'BRASIL'
+}
 
 #adicionar func de pegar apenas bens
 def get_resource_urls(url:str, target:str = 'BA') -> list[str]:
@@ -50,7 +81,7 @@ def decide_directory(file_name: str, directory: str) -> str:
         if key in file_name:
             file_directory = f'{directory}/{key}/{file_name}'
             return file_directory
-    
+
     return f'{directory}/{file_name}'
 
 def download_resources(resource_urls:list[str], url:str) -> dict:
@@ -92,7 +123,7 @@ def download_resources(resource_urls:list[str], url:str) -> dict:
         log["Log not downloaded"] = "No missing file"
 
     return log
-        
+
 def crawler_resources(url:str) -> dict:
     resource_urls = get_resource_urls(url)
     LOG = download_resources(resource_urls,url)

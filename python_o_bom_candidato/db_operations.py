@@ -1,7 +1,10 @@
 from pymongo import MongoClient
 import re
 import os
-client = MongoClient()
+
+
+MONGO_URL = 'mongodb://localhost:27017/'
+client = MongoClient(MONGO_URL)
 
 db = client["2024_Elections"]
 collection = db["BA"]
@@ -9,7 +12,7 @@ bahia_collection = db.BA
 
 
 def insert_basic_info_db(documents:list[dict], state:str) -> str:
-    try: 
+    try:
         db[state].insert_many(documents)
     except Exception:
         return "Error inserting candidates information in the DB."
@@ -61,7 +64,6 @@ def get_picture_from_server(candidates:list) -> list[str]:
                 path = None
             candidate['Foto URL'] = path
     else:
-        
         numero_unico = candidates.get("Número único")
         path_system_jpg = f'./o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpg'
         path_system_jpeg = f'./o_bom_candidato_files/candidatos-2024/BA/FBA{numero_unico}_div.jpeg'
