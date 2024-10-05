@@ -11,6 +11,8 @@ RUN poetry config virtualenvs.create false \
 
 RUN poetry run pip install fastapi[standard]
 
+RUN mkdir /app/o_bom_candidato_files
+
 COPY . .
 
 EXPOSE 8000
