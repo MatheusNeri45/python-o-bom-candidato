@@ -1,3 +1,5 @@
+import locale
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -8,8 +10,11 @@ from .data_processing import consulta_cand, bens_candidato
 from .db_operations import search_candidate, insert_basic_info_db, insert_bens_info_db, get_picture_from_server, search_unique_number
 from .PATHS_AND_URLS import url, path_to_consulta_cand, path_to_consulta_cand_complementar, path_to_bens_candidato
 
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 app = FastAPI()
 templates = Jinja2Templates(directory="./frontend")
+templates.env.globals["currency"] = locale.currency
 
 app = FastAPI()
 app.mount("/o_bom_candidato_files", StaticFiles(directory="./o_bom_candidato_files"), name="o_bom_candidato_files")

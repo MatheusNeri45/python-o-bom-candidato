@@ -3,49 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ candidate['Nome completo'] }}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css">
+    <title>{{ candidate['Nome completo'] }} - O Bom Candidato</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-4">
-      <img class="h-48 w-full object-cover md:h-full md:w-48" src='{{candidate["Foto URL"]}}' alt="Foto do candidato">
-      <p><strong>Nome na urna:</strong> {{ candidate['Nome na urna'] }}</p>
-      <p><strong>UF de nascimento:</strong> {{ candidate['UF de nascimento'] }}</p>
-      <p><strong>Grau de instrução:</strong> {{ candidate['Grau de instrução'] }}</p>
-      <p><strong>Estado civil:</strong> {{ candidate['Estado civil'] }}</p>
-      <p><strong>Despesa máxima da campanha:</strong> {{ candidate['Despesa máxima da campanha'] }}</p>
-      <p><strong>Concorrendo a:</strong> {{ candidate['Concorrendo a'] }}</p>
-      <p><strong>Declarou bens?</strong> {{ candidate['Declarou bens'] }}</p>
-      
+
+<body>
+  <div class="max-w-6xl px-4 mx-auto md:max-w-4xl sm:max-w-2xl sm:px-6">
+    <div class="text-center">
+        <h1
+            class="py-10 max-w-md mx-auto text-3xl font-extrabold tracking-normal text-gray-900 sm:text-3xl md:text-5xl lg:text-6xl md:leading-none sm:max-w-xl md:max-w-2xl lg:max-w-4xl"
+        >
+            <img class="h-48 w-full object-cover md:h-full md:w-48 m-auto py-10" src='{{candidate["Foto URL"]}}' alt="Foto do candidato">
+            <span class="block">{{ candidate['Nome completo'] }}</span>
+        </h1>
+        <h2
+            class="max-w-md px-12 mx-auto mt-3 font-normal text-gray-500 text-md sm:mt-5 sm:text-md md:mt-5 md:text-xl sm:max-w-xl md:max-w-xl"
+        >
+          <p><strong>Nome na urna:</strong> {{ candidate['Nome na urna'] }}</p>
+          <p><strong>UF de nascimento:</strong> {{ candidate['UF de nascimento'] }}</p>
+          <p><strong>Grau de instrução:</strong> {{ candidate['Grau de instrução'] }}</p>
+          <p><strong>Estado civil:</strong> {{ candidate['Estado civil'] }}</p>
+          <p><strong>Despesa máxima da campanha:</strong> R$ {{ currency(candidate['Despesa máxima da campanha'], grouping=True, symbol=None) }}</p>
+          <p><strong>Concorrendo a:</strong> {{ candidate['Concorrendo a'] }}</p>
+          <p><strong>Declarou bens?</strong> {% if candidate['Declarou bens'] %} Sim {% else %} Não {% endif %}</p>
+        </h2>
+
       {% if candidate['Declarou bens'] %}
-      {% if candidate.get('Bens') %}
-      <table class="table-auto border-collapse border border-gray-300 mt-4">
-        <thead>
-          <tr>
-            <th class="border border-gray-400 px-4 py-2">Descrição do bem</th>
-            <th class="border border-gray-400 px-4 py-2">Valor (R$)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for bem, valor in candidate['Bens'].items() %}
-          <tr>
-            <td class="border border-gray-400 px-4 py-2">{{ bem }}</td>
-            <td class="border border-gray-400 px-4 py-2">{{ valor }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        {% if candidate.get('Bens') %}
+          <table class="table-auto border-collapse border border-gray-300 mt-4">
+            <thead>
+              <tr>
+                <th class="border border-gray-400 px-4 py-2">Descrição do bem</th>
+                <th class="border border-gray-400 px-4 py-2">Valor (R$)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for bem, valor in candidate['Bens'].items() %}
+              <tr>
+                <td class="border border-gray-400 px-4 py-2">{{ bem }}</td>
+                <td class="border border-gray-400 px-4 py-2">{{ valor }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+         <p class="text-gray-600 mt-4">Nenhum bem detalhado.</p>
+        {% endif %}
       {% else %}
-      <p class="text-gray-600 mt-4">Nenhum bem detalhado.</p>
+        <p class="text-gray-600 mt-4">Não declarou bens.</p>
       {% endif %}
-      {% else %}
-      <p class="text-gray-600 mt-4">Não declarou bens.</p>
-      {% endif %}
-      <p><img src="/o_bom_candidato_files/candidatos-2024/BA/2024BA{{candidate['Número único']}}_01.pdf" border="0" style="border: 0;"><span style="font-size: 12.16px;"><object data="/o_bom_candidato_files/candidatos-2024/BA/2024BA{{candidate['Número único']}}_01.pdf" width="725" height="830"></object>
-        <p><img src="/o_bom_candidato_files/candidatos-2024/BA/2024BA{{candidate['Número único']}}_01.pdf" border="0" style="border: 0;"><span style="font-size: 12.16px;"><object data="/o_bom_candidato_files/candidatos-2024/BA/2024BA{{candidate['Número único']}}_01.pdf" width="725" height="830"></object>
-    </object>
-    </span></p>
-    </object>
-    </span></p>
-      
+    </div>
+  </div>
 </body>
 </html>
