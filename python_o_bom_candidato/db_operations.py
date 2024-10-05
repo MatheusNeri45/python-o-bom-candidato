@@ -2,9 +2,11 @@ from pymongo import MongoClient
 import re
 import os
 
+from python_o_bom_candidato.config import configure
 
-MONGO_URL = 'mongodb://localhost:27017/'
-client = MongoClient(MONGO_URL)
+
+config = configure()
+client = MongoClient(config.MONGO_URI)
 
 db = client["2024_Elections"]
 collection = db["BA"]
