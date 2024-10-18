@@ -1,10 +1,8 @@
 import locale
-
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
 from .crawler import crawler_resources
 from .data_processing import consulta_cand, bens_candidato
 from .db_operations import search_candidate, insert_basic_info_db, insert_bens_info_db, get_picture_from_server, search_unique_number
